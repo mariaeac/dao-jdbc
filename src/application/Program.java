@@ -52,6 +52,9 @@ public class Program {
         seller.update(sel);
         System.out.println("Update completed!");
 
+        System.out.println("== TEST 6: Delete seller === ");
+        seller.deleteByID(1);
+
 
     }
 }
