@@ -10,8 +10,9 @@ import java.util.Date;
 public class Program {
     public static void main(String[] args) {
 
-        Department department = new Department(1, "Books");
+
         SellerDao seller = DAOFactory.createSellerDAO();
-        System.out.println(department);
+        Seller sel = seller.selectByID(3);
+        System.out.println(sel);
     }
 }
