@@ -34,21 +34,23 @@ public class Program {
             System.out.println(s);
         }
 
-        System.out.println("== TEST 4: Insert Seller: === ");
+        /** System.out.println("== TEST 4: Insert Seller: === ");
         String name = sc.nextLine();
         String email = sc.nextLine();
         Date birthDate = sdf.parse(sc.nextLine());
         Double baseSalary = sc.nextDouble();
         Integer departmentId = sc.nextInt();
-
-        Map<Integer, Department> map = new HashMap<>();
         Department newSellerDep = map.get(departmentId);
 
             Seller newSeller = new Seller(baseSalary, birthDate, name, email, dep);
             seller.insert(newSeller);
-            System.out.println(newSeller.getId());
+            System.out.println(newSeller.getId()); **/
 
-
+        System.out.println("== TEST 5: Update seller === ");
+        sel = seller.selectByID(1);
+        sel.setName("Mario Costa");
+        seller.update(sel);
+        System.out.println("Update completed!");
 
 
     }
