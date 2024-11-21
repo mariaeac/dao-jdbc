@@ -25,5 +25,10 @@ public class Program {
             System.out.println(s);
         }
 
+        System.out.println("== TEST 3: Select All === ");
+        List<Seller> sellers = seller.selectAll();
+        for (Seller s : sellers) {
+            System.out.println(s);
+        }
     }
 }
