@@ -10,7 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoImplJDBC implements SellerDao {
 
@@ -64,6 +67,40 @@ public class SellerDaoImplJDBC implements SellerDao {
 
     }
 
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT seller.*, department.Name as DepName "
+                                        +  "FROM seller INNER JOIN department "
+                                        +  "ON seller.departmentId = department.Id "
+                                        +  "WHERE department.Id = ?  "
+                                        +  "ORDER BY name");
+            st.setInt(1, department.getId());
+            rs = st.executeQuery();
+            List<Seller> list = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+            while(rs.next()) {
+                Department dep = map.get(rs.getInt("DepartmentId"));
+                if (dep == null) {
+                    dep = instantiateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+                Seller sel = instantiateSeller(rs, dep);
+                list.add(sel);
+            }
+            return list;
+
+        } catch(SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+    }
+
     private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
         Seller sel = new Seller();
         sel.setId(rs.getInt("id"));
@@ -86,4 +123,6 @@ public class SellerDaoImplJDBC implements SellerDao {
     public List<Seller> selectAll() {
         return List.of();
     }
+
+
 }
